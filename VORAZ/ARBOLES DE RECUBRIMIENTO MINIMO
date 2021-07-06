@@ -1,1 +1,69 @@
+using namespace std;
+  
 
+#define V 5 
+  
+int minllave(int llave[], bool mstSet[]) 
+{ 
+   
+    int min = INT_MAX, min_index; 
+  
+    for (int v = 0; v < V; v++) 
+        if (mstSet[v] == false && llave[v] < min) 
+            min = llave[v], min_index = v; 
+  
+    return min_index; 
+} 
+  
+
+void printMST(int padre[], int grafo[V][V]) 
+{ 
+    cout<<"arista \tpeso\n"; 
+    for (int i = 1; i < V; i++) 
+        cout<<padre[i]<<" - "<<i<<" \t"<<grafo[i][padre[i]]<<" \n"; 
+} 
+  
+
+void primMST(int grafo[V][V]) 
+{ 
+
+    int padre[V]; 
+    int llave[V]; 
+    bool mstSet[V]; 
+    for (int i = 0; i < V; i++) 
+        llave[i] = INT_MAX, mstSet[i] = false; 
+    llave[0] = 0; 
+    padre[0] = -1; 
+
+    for (int count = 0; count < V - 1; count++)
+    { 
+     
+        int u = minllave(llave, mstSet); 
+        mstSet[u] = true; 
+  
+
+        for (int v = 0; v < V; v++) 
+  
+           
+            if (grafo[u][v] && mstSet[v] == false && grafo[u][v] < llave[v]) 
+                padre[v] = u, llave[v] = grafo[u][v]; 
+    } 
+  
+    printMST(padre, grafo); 
+} 
+  
+
+int main() 
+{ 
+   
+    int grafo[V][V] = { { 0, 2, 0, 6, 0 }, 
+                        { 2, 0, 3, 8, 5 }, 
+                        { 0, 3, 0, 0, 7 }, 
+                        { 6, 8, 0, 0, 9 }, 
+                        { 0, 5, 7, 9, 0 } }; 
+  
+    // imprime la solucion
+    primMST(grafo); 
+  
+    return 0; 
+} 
